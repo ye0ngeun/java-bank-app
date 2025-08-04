@@ -17,11 +17,14 @@ public class BankStatementAnalyzer {
 	
 	private static final String RESOURCES = "resources/";
 	
-	public static void main(String[] args) {
+	public static void analyze(String filename) {
 		// 1. 입출금 내역 파일 읽기
 		// 1-1. 파일을 읽기 위한 해당 경로(Path)에 대한 정보
-		final Path path = Paths.get(RESOURCES + "bank-data.txt");
-		
+		if (filename == null) {
+			System.out.println("입출금 파일명을 인자로 입력하세요. 예: bank-data.csv 또는 bank-data.txt");
+			return;
+		}
+		final Path path = Paths.get(RESOURCES + filename);
 		// 1-2. 실제 파일 읽기
 		try {
 			List<String> lines = Files.readAllLines(path);
@@ -34,7 +37,6 @@ public class BankStatementAnalyzer {
 			// 2. 입력 데이터 파싱
 			// 2-1. 파일 확장자에 따른 파서 선택
 			BankDataParser parser;
-			String filename = path.toString();
 			if (filename.endsWith(".txt")) {
 				parser = new BankDataTSVParser();
 			} else if (filename.endsWith(".csv")) {
