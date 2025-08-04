@@ -33,21 +33,11 @@ public class BankStatementAnalyzer {
 				return; // main을 종료
 			}
 			
-			// 2. 전체 입출금 내역 조회
-			long total = 0L; // 총 입출금액
-			for (String line : lines) {
-				String[] columns = line.split(","); // line = "2020-12-29,Costco,-152200" (자체가 하나의 문자열)
-				// -> columns = ["2020-12-29" , "Costco", "-152200"];
-				
-				long amount = Long.parseLong(columns[2]); // 입출금액만 amount에 파싱하여 할당
-				total += amount;
-			}
-			
-			// 3. 콘솔로 입출금 내역 결과 출력
-			String result = String.format("총 입출금액은 %d원 입니다.", total);
+			// 3. 총 입출금 내역 조회 및 출력
+			String result = String.format("총 입출금액은 %d원 입니다.", findTotalTransactions(lines));
 			System.out.println(result);
 			
-			// 4. 1월의 입출금 내역 조회
+			// 4. 1월의 입출금 내역 조회 및 출력
 			String resultForMonth = String.format("1월의 입출금액은 %d원 입니다.", findTransactionsInJanuary(lines));
 			System.out.println(resultForMonth);
 			
@@ -56,6 +46,20 @@ public class BankStatementAnalyzer {
 		}
 	}
 	
+	// 총 입출금 내역 조회
+	private static long findTotalTransactions(List<String> lines) {
+		long total = 0L;
+		
+		for (String line : lines) {
+			String[] columns = line.split(",");
+			long amount = Long.parseLong(columns[2]); 
+			total += amount;
+		}
+		
+		return total;
+	}
+	
+	// 특정 월의 입출금 내역 조회
 	private static long findTransactionsInJanuary(List<String> lines) {
 		long totalForMonth = 0L;
 		
