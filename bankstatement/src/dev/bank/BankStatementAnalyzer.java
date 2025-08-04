@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class BankStatementAnalyzer {
 	
 	private static final String RESOURCES = "resources/";
+	private static final DateTimeFormatter DATE_PATTERN = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
 	public static void main(String[] args) {
 		// 1. 입출금 내역 파일 읽기
@@ -43,9 +47,27 @@ public class BankStatementAnalyzer {
 			String result = String.format("총 입출금액은 %d원 입니다.", total);
 			System.out.println(result);
 			
+			// 4. 1월의 입출금 내역 조회
+			String resultForMonth = String.format("1월의 입출금액은 %d원 입니다.", findTransactionsInJanuary(lines));
+			System.out.println(resultForMonth);
+			
 		} catch(IOException e) {
 			System.out.println("입출금 파일 내역이 존재하지 않습니다.");
 		}
+	}
+	
+	private static long findTransactionsInJanuary(List<String> lines) {
+		long totalForMonth = 0L;
 		
+		for (String line : lines) {
+			String[] columns = line.split(",");
+			LocalDate dateTime = LocalDate.parse(columns[0], DATE_PATTERN);
+			
+			if (dateTime.getMonth() == Month.JANUARY) {
+				totalForMonth += Long.parseLong(columns[2]); // 문자열값을 long타입으로 파싱
+			}
+		}
+		
+		return totalForMonth;
 	}
 }
