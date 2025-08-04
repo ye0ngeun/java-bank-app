@@ -34,11 +34,11 @@ public class BankStatementAnalyzer {
 			}
 			
 			// 2. 총 입출금 내역 조회 및 출력
-			String result = String.format("총 입출금액은 %d원 입니다.", findTotalTransactions(lines));
+			String result = String.format("총 입출금액은 %d원 입니다.", calculateTotalAmount(lines));
 			System.out.println(result);
 			
 			// 3. 특정 월의 입출금 내역 조회 및 출력
-			String resultForMonth = String.format("1월의 입출금액은 %d원 입니다.", findTransactionsInMonth(lines, Month.JANUARY));
+			String resultForMonth = String.format("1월의 입출금액은 %d원 입니다.", calculateTotalAmountInMonth(lines, Month.JANUARY));
 			System.out.println(resultForMonth);
 			
 		} catch(IOException e) {
@@ -47,7 +47,7 @@ public class BankStatementAnalyzer {
 	}
 	
 	// 총 입출금 내역 조회 메서드
-	private static long findTotalTransactions(List<String> lines) {
+	private static long calculateTotalAmount(List<String> lines) {
 		long total = 0L;
 		
 		for (String line : lines) {
@@ -60,7 +60,7 @@ public class BankStatementAnalyzer {
 	}
 	
 	// 특정 월의 입출금 내역 조회 메서드
-	private static long findTransactionsInMonth(List<String> lines, Month month) {
+	private static long calculateTotalAmountInMonth(List<String> lines, Month month) {
 		long totalForMonth = 0L;
 		
 		for (String line : lines) {
