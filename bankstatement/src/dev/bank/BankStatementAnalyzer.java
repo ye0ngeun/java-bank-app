@@ -8,7 +8,7 @@ import java.time.Month;
 import java.util.List;
 
 import dev.bank.model.BankTransaction;
-import dev.bank.parser.BankDataCSVParser;
+import dev.bank.parser.BankDataTSVParser;
 import dev.bank.service.BankProcessor;
 
 public class BankStatementAnalyzer {
@@ -18,7 +18,7 @@ public class BankStatementAnalyzer {
 	public static void main(String[] args) {
 		// 1. 입출금 내역 파일 읽기
 		// 1-1. 파일을 읽기 위한 해당 경로(Path)에 대한 정보
-		final Path path = Paths.get(RESOURCES + "bank-data.csv");
+		final Path path = Paths.get(RESOURCES + "bank-data.txt");
 		
 		// 1-2. 실제 파일 읽기
 		try {
@@ -30,8 +30,8 @@ public class BankStatementAnalyzer {
 			}
 			
 			// 2. 입출금내역 파일 파싱
-			BankDataCSVParser csvParser = new BankDataCSVParser();
-			List<BankTransaction> bankTransactions = csvParser.parseLinesFromCSV(lines); // lines 객체를 전달
+			BankDataTSVParser tsvParser = new BankDataTSVParser();
+			List<BankTransaction> bankTransactions = tsvParser.parseLinesFromTSV(lines);
 			
 			// 3. 입출금 내역 조회 로직을 위한 BankProcessor 객체 생성
 			BankProcessor processor = new BankProcessor(bankTransactions);
