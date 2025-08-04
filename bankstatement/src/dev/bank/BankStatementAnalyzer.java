@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
 import dev.bank.model.BankTransaction;
 import dev.bank.parser.BankDataCSVParser;
+import dev.bank.service.BankProcessor;
 
 public class BankStatementAnalyzer {
 	
@@ -33,12 +33,15 @@ public class BankStatementAnalyzer {
 			BankDataCSVParser csvParser = new BankDataCSVParser();
 			List<BankTransaction> bankTransactions = csvParser.parseLinesFromCSV(lines); // lines 객체를 전달
 			
-			// 3. 총 입출금 내역 조회 및 출력
-			String result = String.format("총 입출금액은 %d원 입니다", calculateTotalAmount(bankTransactions));
+			// 3. 입출금 내역 조회 로직을 위한 BankProcessor 객체 생성
+			BankProcessor processor = new BankProcessor(bankTransactions);
+			
+			// 4. 총 입출금 내역 조회 및 출력
+			String result = String.format("총 입출금액은 %d원 입니다", processor.calculateTotalAmount());
 			System.out.println(result);
 			
-			// 4. 특정 월의 입출금 내역 조회 및 출력
-			String resultForMonth = String.format("1월의 입출금액은 %d원 입니다.", calculateTotalAmountInMonth(bankTransactions, Month.JANUARY));
+			// 5. 특정 월의 입출금 내역 조회 및 출력
+			String resultForMonth = String.format("1월의 입출금액은 %d원 입니다.", processor.calculateTotalAmountInMonth(Month.JANUARY));
 			System.out.println(resultForMonth);
 			
 		} catch(IOException e) {
@@ -46,29 +49,5 @@ public class BankStatementAnalyzer {
 		}
 	}
 	
-	// 총 입출금 내역 조회 메서드
-	private static long calculateTotalAmount(List<BankTransaction> bankTransactions) {
-		long total = 0L;
-		
-		for (BankTransaction bankTransaction : bankTransactions) {
-			total += bankTransaction.getAmount();
-		}
-		
-		return total;
-	}
 	
-	// 특정 월의 입출금 내역 조회 메서드
-	private static long calculateTotalAmountInMonth(List<BankTransaction> bankTransactions, Month month) {
-		long totalForMonth = 0L;
-		
-		for (BankTransaction bankTransaction : bankTransactions) {
-			LocalDate date = bankTransaction.getDate();
-			
-			if(date.getMonth() == month) {
-				totalForMonth += bankTransaction.getAmount();
-			}
-		}
-		
-		return totalForMonth;
-	}
 }
