@@ -10,7 +10,7 @@ import dev.bank.model.BankTransaction;
 /**
  * TSV - Tab seperated value, 탭으로 구분된 파일
  */
-public class BankDataTSVParser {
+public class BankDataTSVParser implements BankDataParser {
 	private static final DateTimeFormatter DATE_PATTERN 
 	= DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
 
@@ -20,7 +20,7 @@ public class BankDataTSVParser {
  * @param lines - 1줄씩 읽어들인 입출금 내역 리스트
  * @return List<BankTransaction> - 단 건 입출금 내역 데이터 리스트
  */
-public List<BankTransaction> parseLinesFromTSV(List<String> lines) {
+public List<BankTransaction> parseLinesFrom(List<String> lines) {
 	List<BankTransaction> bankTransactions = new ArrayList<>(); // 가변길이 배열 객체
 	
 	for (String line : lines) {

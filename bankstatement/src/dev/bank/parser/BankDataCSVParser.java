@@ -12,7 +12,7 @@ import dev.bank.model.BankTransaction;
  * 
  * BankDataCSVParser.java - 읽어들인 csv 파일을 Java 프로그램에서 사용할 수 있도록 변환 처리 역할 수행
  */
-public class BankDataCSVParser {
+public class BankDataCSVParser implements BankDataParser {
 	
 	private static final DateTimeFormatter DATE_PATTERN 
 		= DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
@@ -21,9 +21,9 @@ public class BankDataCSVParser {
 	 * CSV 파일을 파싱해주는 처리를 수행하는 메서드
 	 * 
 	 * @param lines - 1줄씩 읽어들인 입출금 내역 리스트
-	 * @return List<??> - 단 건 입출금 내역 데이터 리스트
+	 * @return List<BankTransaction> - 단 건 입출금 내역 데이터 리스트
 	 */
-	public List<BankTransaction> parseLinesFromCSV(List<String> lines) {
+	public List<BankTransaction> parseLinesFrom(List<String> lines) {
 		// 전체 입출금 내역 데이터를 반환할 값
 		List<BankTransaction> bankTransactions = new ArrayList<>(); // 가변길이 배열 객체
 		

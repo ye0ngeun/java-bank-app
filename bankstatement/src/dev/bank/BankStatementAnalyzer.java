@@ -8,6 +8,8 @@ import java.time.Month;
 import java.util.List;
 
 import dev.bank.model.BankTransaction;
+import dev.bank.parser.BankDataCSVParser;
+import dev.bank.parser.BankDataParser;
 import dev.bank.parser.BankDataTSVParser;
 import dev.bank.service.BankProcessor;
 
@@ -29,9 +31,22 @@ public class BankStatementAnalyzer {
 				return; // main을 종료
 			}
 			
-			// 2. 입출금내역 파일 파싱
-			BankDataTSVParser tsvParser = new BankDataTSVParser();
-			List<BankTransaction> bankTransactions = tsvParser.parseLinesFromTSV(lines);
+			// 2. 입력 데이터 파싱
+			// 2-1. 파일 확장자에 따른 파서 선택
+			BankDataParser parser;
+			String filename = path.toString();
+			if (filename.endsWith(".txt")) {
+				parser = new BankDataTSVParser();
+			} else if (filename.endsWith(".csv")) {
+				parser = new BankDataCSVParser();
+			} else {
+				System.out.println("지원하지 않는 파일 형식입니다. .csv 또는 .txt 파일만 허용됩니다.");
+				return;
+			}
+			
+			// 2-2. 선택된 파서에 의해 입력 데이터 파싱
+			List<BankTransaction> bankTransactions = parser.parseLinesFrom(lines);
+			
 			
 			// 3. 입출금 내역 조회 로직을 위한 BankProcessor 객체 생성
 			BankProcessor processor = new BankProcessor(bankTransactions);
