@@ -7,10 +7,13 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class BankStatementAnalyzer {
+	
+	private static final String RESOURCES = "resources/";
+	
 	public static void main(String[] args) {
 		// 1. 입출금 내역 파일 읽기
 		// 1-1. 파일을 읽기 위한 해당 경로(Path)에 대한 정보
-		final Path path = Paths.get("resources/" + "bank-data.csv");
+		final Path path = Paths.get(RESOURCES + "bank-data.csv");
 		
 		// 1-2. 실제 파일 읽기
 		try {
