@@ -47,7 +47,7 @@ public class BankStatementAnalyzer {
 			}
 			
 			// 2-2. 선택된 파서에 의해 입력 데이터 파싱
-			List<BankTransaction> bankTransactions = parser.parseLinesFrom(lines);
+			List<BankTransaction> bankTransactions = parser.parse(lines);
 			
 			
 			// 3. 입출금 내역 조회 로직을 위한 BankProcessor 객체 생성
